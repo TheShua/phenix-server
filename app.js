@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
 	cors({
-		origin: process.env.FRONT_END_URL,
+		origin: [process.env.FRONT_END_URL, 'http://www.dnd5eapi.co/'],
 		credentials: true,
 	})
 );
@@ -35,7 +35,12 @@ app.use(
 );
 
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/dnd', require('./routes/dnd'));
+app.use('/api/characters', require('./routes/characters'));
+app.use('/api/tables', require('./routes/tables'));
+app.use('/api/sessions', require('./routes/sessions'));
+app.use('/api/mailbox', require('./routes/mailbox'));
 
 module.exports = app;
