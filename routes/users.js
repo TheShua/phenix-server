@@ -30,8 +30,7 @@ router.get('/', function (req, res, next) {
 
 router.patch('/:id', upload.single('avatar'), (req, res, next) => {
 	if (!req.body.password) delete req.body.password;
-	console.log(req.body);
-	return;
+	if (req.file) req.body.avatar = req.file.secure_url;
 	User.findByIdAndUpdate(req.params.id, req.body, { new: true })
 		.then((dbResult) => res.status(200).json(dbResult))
 		.catch((dbError) => res.status(500).json(dbError));

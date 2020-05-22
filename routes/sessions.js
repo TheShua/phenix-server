@@ -62,14 +62,15 @@ router.patch('/:id/edit', upload.none(), (req, res, next) => {
 		.catch((dbError) => res.status(500).json(dbError));
 });
 
-router.patch('/:id', upload.none(), (req, res, next) => {
-	if (req.body._id) delete req.body._id;
+router.patch('/:id', (req, res, next) => {
 	PrivateMessage.findByIdAndUpdate(req.params.id, req.body, { new: true })
 		.then((dbResult) => {
-			console.log(dbResult);
 			res.status(200).json(dbResult);
 		})
-		.catch((dbError) => res.status(500).json(dbError));
+		.catch((dbError) => {
+			console.log(dbError);
+			res.status(500).json(dbError);
+		});
 });
 
 router.get('/:id/next', async (req, res, next) => {
