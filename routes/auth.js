@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 const salt = 10;
+// let p = 'lol';
+// console.log(bcrypt.hashSync(p, salt));
 
 router.post('/signin', (req, res, next) => {
 	const { email, password } = req.body;

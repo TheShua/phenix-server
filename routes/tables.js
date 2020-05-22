@@ -12,7 +12,16 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/:id/all', (req, res, next) => {
-	Promise.all([Table.find({ dm_id: req.params.id }), Table.find({ player_id: req.params.id })])
+	let promises = [];
+	if (req.query.populated) {
+		promises = [
+			Table.find({ dm_id: req.params.id }).populate('dm_id player_id'),
+			Table.find({ player_id: req.params.id }).populate('dm_id player_id'),
+		];
+	} else {
+		promises = [Table.find({ dm_id: req.params.id }), Table.find({ player_id: req.params.id })];
+	}
+	Promise.all(promises)
 		.then(([dm, user]) => {
 			res.status(200).json({ dm: dm, player: user });
 		})
@@ -23,6 +32,7 @@ router.get('/:id/all', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
 	Table.findById(req.params.id)
+		.populate('dm_id player_id')
 		.then((dbResult) => {
 			res.status(200).json(dbResult);
 		})
